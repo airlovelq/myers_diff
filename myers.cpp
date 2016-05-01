@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <iterator>
 #include <exception>
 
 #include "myers.h"
@@ -13,7 +14,7 @@ int Myers::diff_inpl(int size_a, int size_b, const Comparator& comparator)
 {
     const int& offset = size_a;
 
-    VItem* v = new VItem[size_a + size_b + 1];
+    std::vector<VItem> v(size_a + size_b + 1);
 
     tree_.clear();
     tail_ = NO_LINK;
@@ -27,9 +28,9 @@ int Myers::diff_inpl(int size_a, int size_b, const Comparator& comparator)
                 continue;
             }
 
-            VItem* v_k   = v + k + offset;
-            VItem* v_kp1 = v_k + 1;
-            VItem* v_km1 = v_k - 1;
+            std::vector<VItem>::iterator v_k   = v.begin() + k + offset;
+            std::vector<VItem>::iterator v_kp1 = v_k + 1;
+            std::vector<VItem>::iterator v_km1 = v_k - 1;
 
             if(d != 0)
             {
@@ -58,12 +59,10 @@ int Myers::diff_inpl(int size_a, int size_b, const Comparator& comparator)
             if(((v_k->y - k) >= size_a) && (v_k->y >= size_b))
             {
                 tail_ = v_k->tail;
-                delete[] v;
                 return d;
             }
         }
     }
-    delete[] v;
     throw Exception("not found");
 }
 
