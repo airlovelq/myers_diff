@@ -1,8 +1,4 @@
-#include <string>
 #include <vector>
-#include <algorithm>
-#include <iterator>
-#include <exception>
 
 #include "myers.h"
 
