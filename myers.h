@@ -69,7 +69,7 @@ private:
         }
     };
 
-    int diffImpl(int sizeA, int sizeB, const Comparator& comparer);
+    int diffImpl(int sizeA, int sizeB, const Comparator& comparator);
 
     std::vector<TreeNode> tree_;
     int                   tail_;

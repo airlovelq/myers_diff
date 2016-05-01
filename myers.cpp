@@ -9,7 +9,7 @@ Myers::Myers() : tree_(), tail_(NO_LINK)
 {
 }
 
-int Myers::diffImpl(int sizeA, int sizeB, const Comparator& comparer)
+int Myers::diffImpl(int sizeA, int sizeB, const Comparator& comparator)
 {
     const int& offset = sizeA;
 
@@ -47,7 +47,7 @@ int Myers::diffImpl(int sizeA, int sizeB, const Comparator& comparer)
                 }
             }
 
-            while(((v_k->y - k) < sizeA) && (v_k->y < sizeB) && comparer.isEqual(v_k->y - k, v_k->y))
+            while(((v_k->y - k) < sizeA) && (v_k->y < sizeB) && comparator.isEqual(v_k->y - k, v_k->y))
             {
                 TreeNode node(COMMON, v_k->tail);
                 v_k->tail = tree_.size();
