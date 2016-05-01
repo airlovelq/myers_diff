@@ -42,7 +42,7 @@ private:
     struct Comparator
     {
         virtual ~Comparator() {}
-        virtual bool isEqual(int x, int y) const = 0;
+        virtual bool operator () (int x, int y) const = 0;
     };
 
     template<typename sequence_t>
@@ -53,7 +53,7 @@ private:
 
         ComparatorImpl(const sequence_t& sequence_a, const sequence_t& sequence_b) : sequence_a(sequence_a), sequence_b(sequence_b) {}
 
-        bool isEqual(int x, int y) const
+        bool operator () (int x, int y) const
         {
             return sequence_a.at(x) == sequence_b.at(y);
         }
