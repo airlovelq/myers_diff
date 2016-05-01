@@ -9,20 +9,20 @@ Myers::Myers() : tree_(), tail_(NO_LINK)
 {
 }
 
-int Myers::diffImpl(int sizeA, int sizeB, const Comparator& comparator)
+int Myers::diff_inpl(int size_a, int size_b, const Comparator& comparator)
 {
-    const int& offset = sizeA;
+    const int& offset = size_a;
 
-    VItem* v = new VItem[sizeA + sizeB + 1];
+    VItem* v = new VItem[size_a + size_b + 1];
 
     tree_.clear();
     tail_ = NO_LINK;
 
-    for(int d = 0; d <= sizeA + sizeB; ++d)
+    for(int d = 0; d <= size_a + size_b; ++d)
     {
         for(int k = -d; k <= d; k += 2)
         {
-            if((k < -sizeA) || (sizeB < k))
+            if((k < -size_a) || (size_b < k))
             {
                 continue;
             }
@@ -33,7 +33,7 @@ int Myers::diffImpl(int sizeA, int sizeB, const Comparator& comparator)
 
             if(d != 0)
             {
-                if(((k == -d) || (k == -sizeA)) || (((k != d) && (k != sizeB)) && ((v_km1->y + 1) < v_kp1->y)))
+                if(((k == -d) || (k == -size_a)) || (((k != d) && (k != size_b)) && ((v_km1->y + 1) < v_kp1->y)))
                 {
                     v_k->y    = v_kp1->y;
                     v_k->tail = tree_.size();
@@ -47,7 +47,7 @@ int Myers::diffImpl(int sizeA, int sizeB, const Comparator& comparator)
                 }
             }
 
-            while(((v_k->y - k) < sizeA) && (v_k->y < sizeB) && comparator.isEqual(v_k->y - k, v_k->y))
+            while(((v_k->y - k) < size_a) && (v_k->y < size_b) && comparator.isEqual(v_k->y - k, v_k->y))
             {
                 TreeNode node(COMMON, v_k->tail);
                 v_k->tail = tree_.size();
@@ -55,7 +55,7 @@ int Myers::diffImpl(int sizeA, int sizeB, const Comparator& comparator)
                 ++v_k->y;
             }
 
-            if(((v_k->y - k) >= sizeA) && (v_k->y >= sizeB))
+            if(((v_k->y - k) >= size_a) && (v_k->y >= size_b))
             {
                 tail_ = v_k->tail;
                 delete[] v;
@@ -72,7 +72,7 @@ void Myers::getSES(EditSequence& ses) const
     ses.clear();
     for(int i = tail_; i != NO_LINK; i = tree_[i].prev)
     {
-        ses.push_back(tree_[i].editType);
+        ses.push_back(tree_[i].edit_type);
     }
     std::reverse(ses.begin(), ses.end());
 }

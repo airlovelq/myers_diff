@@ -23,9 +23,9 @@ public:
     Myers();
 
     template<typename sequence_t>
-    int diff(const sequence_t& sequenceA, const sequence_t& sequenceB)
+    int diff(const sequence_t& sequence_a, const sequence_t& sequence_b)
     {
-        return diffImpl(sequenceA.size(), sequenceB.size(), ComparatorImpl<sequence_t>(sequenceA, sequenceB));
+        return diff_inpl(sequence_a.size(), sequence_b.size(), ComparatorImpl<sequence_t>(sequence_a, sequence_b));
     }
 
     void getSES(EditSequence& ses) const;
@@ -35,10 +35,10 @@ private:
 
     struct TreeNode
     {
-        EditType editType;
+        EditType edit_type;
         int      prev;
 
-        TreeNode(EditType editType, int prev) : editType(editType), prev(prev) {}
+        TreeNode(EditType edit_type, int prev) : edit_type(edit_type), prev(prev) {}
     };
 
     struct VItem
@@ -58,18 +58,18 @@ private:
     template<typename sequence_t>
     struct ComparatorImpl : public Comparator
     {
-        const sequence_t& sequenceA;
-        const sequence_t& sequenceB;
+        const sequence_t& sequence_a;
+        const sequence_t& sequence_b;
 
-        ComparatorImpl(const sequence_t& sequenceA, const sequence_t& sequenceB) : sequenceA(sequenceA), sequenceB(sequenceB) {}
+        ComparatorImpl(const sequence_t& sequence_a, const sequence_t& sequence_b) : sequence_a(sequence_a), sequence_b(sequence_b) {}
 
         bool isEqual(int x, int y) const
         {
-            return sequenceA.at(x) == sequenceB.at(y);
+            return sequence_a.at(x) == sequence_b.at(y);
         }
     };
 
-    int diffImpl(int sizeA, int sizeB, const Comparator& comparator);
+    int diff_inpl(int size_a, int size_b, const Comparator& comparator);
 
     std::vector<TreeNode> tree_;
     int                   tail_;
