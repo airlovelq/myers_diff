@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
         std::string filenameB(argv[2]);
 
         std::cout << "FILE NAME: " << myers.diff(filenameA, filenameB) << "\n";
-        myers.getSES(ses);
+        myers.get_ses(ses);
         showDiff(ses, filenameA, filenameB);
 
         std::cout << "\n";
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
         load(filenameB, stringsB);
 
         std::cout << "CONTENTS: " << myers.diff(stringsA, stringsB) << "\n";
-        myers.getSES(ses);
+        myers.get_ses(ses);
         showDiff(ses, stringsA, stringsB);
     }
     catch(const std::exception& e)

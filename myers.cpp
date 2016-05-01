@@ -77,7 +77,7 @@ int Myers::diff_inpl(int size_a, int size_b, const SequencesContainer& sequences
     throw Exception("not found");
 }
 
-void Myers::getSES(EditSequence& ses) const
+void Myers::get_ses(EditSequence& ses) const
 {
     ses.clear();
     for(int i = tail_; i != NO_LINK; i = tree_[i].prev)

@@ -28,7 +28,7 @@ public:
         return diff_inpl(sequence_a.size(), sequence_b.size(), SequencesContainerImpl<sequence_t>(sequence_a, sequence_b));
     }
 
-    void getSES(EditSequence& ses) const;
+    void get_ses(EditSequence& ses) const;
 
 private:
     struct TreeNode
