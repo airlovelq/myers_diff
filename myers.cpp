@@ -21,7 +21,7 @@ Myers::Myers() : tree_(), tail_(NO_LINK)
 {
 }
 
-int Myers::diff_inpl(int size_a, int size_b, const Comparator& comparator)
+int Myers::diff_inpl(int size_a, int size_b, const SequencesContainer& sequences)
 {
     const int& offset = size_a;
 
@@ -59,7 +59,7 @@ int Myers::diff_inpl(int size_a, int size_b, const Comparator& comparator)
                 }
             }
 
-            while(((v_k->y - k) < size_a) && (v_k->y < size_b) && comparator(v_k->y - k, v_k->y))
+            while(((v_k->y - k) < size_a) && (v_k->y < size_b) && sequences.equals(v_k->y - k, v_k->y))
             {
                 TreeNode node(COMMON, v_k->tail);
                 v_k->tail = tree_.size();
