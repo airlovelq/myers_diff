@@ -6,6 +6,21 @@
 
 #include "myers.h"
 
+namespace
+{
+
+static const int NO_LINK = -1;
+
+struct VItem
+{
+    int y;
+    int tail;
+
+    VItem(int y = 0, int tail = NO_LINK) : y(y), tail(tail) {}
+};
+
+} // anonymous namespace
+
 Myers::Myers() : tree_(), tail_(NO_LINK)
 {
 }

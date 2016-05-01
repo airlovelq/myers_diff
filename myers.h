@@ -31,22 +31,12 @@ public:
     void getSES(EditSequence& ses) const;
 
 private:
-    static const int NO_LINK = -1;
-
     struct TreeNode
     {
         EditType edit_type;
         int      prev;
 
         TreeNode(EditType edit_type, int prev) : edit_type(edit_type), prev(prev) {}
-    };
-
-    struct VItem
-    {
-        int y;
-        int tail;
-
-        VItem(int y = 0, int tail = NO_LINK) : y(y), tail(tail) {}
     };
 
     struct Comparator
