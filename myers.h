@@ -106,7 +106,7 @@ public:
     }
 
     template<typename iterator_t>
-    void get_ses(iterator_t first, iterator_t last)
+    void get_ses(iterator_t first, iterator_t last) const
     {
         std::copy_n(ses_.rbegin(), std::min(ses_.size(), static_cast<std::vector<EditType>::size_type>(std::distance(first, last))), first);
     }
