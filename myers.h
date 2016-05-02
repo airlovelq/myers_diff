@@ -28,9 +28,21 @@ public:
         return diff_inpl(sequence_a.size(), sequence_b.size(), SequencesContainerImpl<sequence_t>(sequence_a, sequence_b));
     }
 
-    void get_ses(std::vector<EditType>& ses) const
+    int ses_size() const
+    {
+        return ses_.size();
+    }
+
+    template<typename container_t>
+    void get_ses(container_t& ses) const
     {
         std::copy(ses_.rbegin(), ses_.rend(), std::back_inserter(ses));
+    }
+
+    template<typename iterator_t>
+    void get_ses(iterator_t first, iterator_t last)
+    {
+        std::copy_n(ses_.rbegin(), std::min(ses_.size(), static_cast<std::vector<EditType>::size_type>(std::distance(first, last))), first);
     }
 
 private:

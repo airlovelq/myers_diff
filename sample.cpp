@@ -76,8 +76,9 @@ int main(int argc, char* argv[])
         load(filenameB, stringsB);
 
         std::cout << "CONTENTS: " << myers.diff(stringsA, stringsB) << "\n";
-        ses.clear();
-        myers.get_ses(ses);
+
+        ses.resize(myers.ses_size());
+        myers.get_ses(ses.begin(), ses.end());
         showDiff(ses, stringsA, stringsB);
     }
     catch(const std::exception& e)
