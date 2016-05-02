@@ -23,16 +23,14 @@ public:
         std::string what_;
     };
 
-    Myers() : ses_() {}
-
-    template<typename sequence_t>
-    int diff(const sequence_t& sequence_a, const sequence_t& sequence_b)
+    template<typename sequence_t, typename contailer_t = std::vector<EditType>>
+    static contailer_t diff(const sequence_t& sequence_a, const sequence_t& sequence_b)
     {
         return diff(std::begin(sequence_a), std::end(sequence_a), std::begin(sequence_b), std::end(sequence_b));
     }
 
-    template<typename iterator_t>
-    int diff(iterator_t first_a, iterator_t last_a, iterator_t first_b, iterator_t last_b)
+    template<typename iterator_t, typename contailer_t = std::vector<EditType>>
+    static contailer_t diff(iterator_t first_a, iterator_t last_a, iterator_t first_b, iterator_t last_b)
     {
         const int size_a = std::distance(first_a, last_a);
         const int size_b = std::distance(first_b, last_b);
@@ -82,34 +80,17 @@ public:
 
                 if(((v_k->y - k) >= size_a) && (v_k->y >= size_b))
                 {
-                    ses_.clear();
+                    contailer_t ses;
                     for(int i = v_k->tail; i != NO_LINK; i = tree[i].prev)
                     {
-                        ses_.push_back(tree[i].edit_type);
+                        ses.push_back(tree[i].edit_type);
                     }
 
-                    return d;
+                    return contailer_t(ses.rbegin(), ses.rend());
                 }
             }
         }
         throw Exception("not found");
-    }
-
-    int ses_size() const
-    {
-        return ses_.size();
-    }
-
-    template<typename container_t>
-    void get_ses(container_t& ses) const
-    {
-        std::copy(ses_.rbegin(), ses_.rend(), std::back_inserter(ses));
-    }
-
-    template<typename iterator_t>
-    void get_ses(iterator_t first, iterator_t last) const
-    {
-        std::copy_n(ses_.rbegin(), std::min(ses_.size(), static_cast<std::vector<EditType>::size_type>(std::distance(first, last))), first);
     }
 
 private:
@@ -130,8 +111,6 @@ private:
 
         TreeNode(EditType edit_type, int prev) : edit_type(edit_type), prev(prev) {}
     };
-
-    std::vector<EditType> ses_;
 };
 
 #endif//EMATTSAN_MYERS_H__

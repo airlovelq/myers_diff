@@ -26,14 +26,10 @@ int main(int argc, char* argv[])
 
     try
     {
-        Myers                        myers;
-        std::vector<Myers::EditType> ses;
-
         std::string filename_a(argv[1]);
         std::string filename_b(argv[2]);
 
-        std::cout << "FILE NAME: " << myers.diff(filename_a, filename_b) << "\n";
-        myers.get_ses(ses);
+        std::vector<Myers::EditType> ses = Myers::diff(filename_a, filename_b);
         show_diff(ses, filename_a, filename_b);
 
         std::cout << "\n";
@@ -44,10 +40,7 @@ int main(int argc, char* argv[])
         load(filename_a, strings_a);
         load(filename_b, strings_b);
 
-        std::cout << "CONTENTS: " << myers.diff(strings_a.begin(), strings_a.end(), strings_b.begin(), strings_b.end()) << "\n";
-
-        ses.resize(myers.ses_size());
-        myers.get_ses(ses.begin(), ses.end());
+        ses = Myers::diff(strings_a.begin(), strings_a.end(), strings_b.begin(), strings_b.end());
         show_diff(ses, strings_a, strings_b);
     }
     catch(const std::exception& e)
