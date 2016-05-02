@@ -1,3 +1,6 @@
+#ifndef EMATTSAN_MYERS_H__
+#define EMATTSAN_MYERS_H__
+
 #include <string>
 #include <vector>
 #include <exception>
@@ -130,3 +133,5 @@ private:
 
     std::vector<EditType> ses_;
 };
+
+#endif//EMATTSAN_MYERS_H__
