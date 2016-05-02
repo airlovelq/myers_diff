@@ -2,6 +2,7 @@
 #include <fstream>
 
 #include "myers.h"
+#include "sample.h"
 
 void load(const std::string& filename, std::vector<std::string>& strings)
 {
@@ -12,38 +13,6 @@ void load(const std::string& filename, std::vector<std::string>& strings)
     while(std::getline(src, s).good())
     {
         strings.push_back(s);
-    }
-}
-
-template<typename sequence_t>
-void showDiff(const std::vector<Myers::EditType>& ses, const sequence_t& sequenceA, const sequence_t& sequenceB)
-{
-    typename sequence_t::const_iterator a = sequenceA.begin();
-    typename sequence_t::const_iterator b = sequenceB.begin();
-    for(std::vector<Myers::EditType>::const_iterator i = ses.begin(); i != ses.end(); ++i)
-    {
-        switch(*i)
-        {
-        case Myers::DELETE:
-            std::cout << "- " << *a;
-            ++a;
-            break;
-
-        case Myers::COMMON:
-            std::cout << "  " << *a;
-            ++a;
-            ++b;
-            break;
-
-        case Myers::ADD:
-            std::cout << "+ " << *b;
-            ++b;
-            break;
-
-        default:
-            break;
-        }
-        std::cout << "\n";
     }
 }
 
@@ -65,7 +34,7 @@ int main(int argc, char* argv[])
 
         std::cout << "FILE NAME: " << myers.diff(filenameA, filenameB) << "\n";
         myers.get_ses(ses);
-        showDiff(ses, filenameA, filenameB);
+        show_diff(ses, filenameA, filenameB);
 
         std::cout << "\n";
 
@@ -79,7 +48,7 @@ int main(int argc, char* argv[])
 
         ses.resize(myers.ses_size());
         myers.get_ses(ses.begin(), ses.end());
-        showDiff(ses, stringsA, stringsB);
+        show_diff(ses, stringsA, stringsB);
     }
     catch(const std::exception& e)
     {
