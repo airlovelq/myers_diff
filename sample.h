@@ -1,12 +1,13 @@
 #ifndef EMATTSAN_SAMPLE_H__
 #define EMATTSAN_SAMPLE_H__
 
-template<typename sequence_t>
-void show_diff(const std::vector<Myers::EditType>& ses, const sequence_t& sequenceA, const sequence_t& sequenceB)
+template<typename iterator_t, typename contailer_t>
+void show_diff(const contailer_t& ses, const iterator_t& first_a, const iterator_t& first_b)
 {
-    auto a = std::begin(sequenceA);
-    auto b = std::begin(sequenceB);
-    for(std::vector<Myers::EditType>::const_iterator i = ses.begin(); i != ses.end(); ++i)
+    iterator_t a = first_a;
+    iterator_t b = first_b;
+    typename contailer_t::const_iterator end_of_ses = std::end(ses);
+    for(typename contailer_t::const_iterator i = std::begin(ses); i != end_of_ses; ++i)
     {
         switch(*i)
         {
