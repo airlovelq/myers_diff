@@ -25,7 +25,73 @@ public:
     template<typename sequence_t>
     int diff(const sequence_t& sequence_a, const sequence_t& sequence_b)
     {
-        return diff_inpl(sequence_a.size(), sequence_b.size(), SequencesContainerImpl<sequence_t>(sequence_a, sequence_b));
+        return diff(std::begin(sequence_a), std::end(sequence_a), std::begin(sequence_b), std::end(sequence_b));
+    }
+
+    template<typename iterator_t>
+    int diff(iterator_t first_a, iterator_t last_a, iterator_t first_b, iterator_t last_b)
+    {
+        const int size_a = std::distance(first_a, last_a);
+        const int size_b = std::distance(first_b, last_b);
+        const int offset = size_a;
+
+        std::vector<VItem> v(size_a + size_b + 1);
+
+        std::vector<TreeNode> tree;
+        int tail = NO_LINK;
+
+        for(int d = 0; d <= size_a + size_b; ++d)
+        {
+            for(int k = -d; k <= d; k += 2)
+            {
+                if((k < -size_a) || (size_b < k))
+                {
+                    continue;
+                }
+
+                auto v_k   = v.begin() + k + offset;
+                auto v_kp1 = v_k + 1;
+                auto v_km1 = v_k - 1;
+
+                if(d != 0)
+                {
+                    if(((k == -d) || (k == -size_a)) || (((k != d) && (k != size_b)) && ((v_km1->y + 1) < v_kp1->y)))
+                    {
+                        v_k->y    = v_kp1->y;
+                        v_k->tail = tree.size();
+                        tree.push_back(TreeNode(DELETE, v_kp1->tail));
+                    }
+                    else
+                    {
+                        v_k->y    = v_km1->y + 1;
+                        v_k->tail = tree.size();
+                        tree.push_back(TreeNode(ADD, v_km1->tail));
+                    }
+                }
+
+                while(((v_k->y - k) < size_a) && (v_k->y < size_b) && (*(first_a + v_k->y - k) == *(first_b + v_k->y)))
+                {
+                    TreeNode node(COMMON, v_k->tail);
+                    v_k->tail = tree.size();
+                    tree.push_back(node);
+                    ++v_k->y;
+                }
+
+                if(((v_k->y - k) >= size_a) && (v_k->y >= size_b))
+                {
+                    tail = v_k->tail;
+
+                    ses_.clear();
+                    for(int i = tail; i != NO_LINK; i = tree[i].prev)
+                    {
+                        ses_.push_back(tree[i].edit_type);
+                    }
+
+                    return d;
+                }
+            }
+        }
+        throw Exception("not found");
     }
 
     int ses_size() const
@@ -63,89 +129,6 @@ private:
 
         TreeNode(EditType edit_type, int prev) : edit_type(edit_type), prev(prev) {}
     };
-
-    struct SequencesContainer
-    {
-        virtual ~SequencesContainer() {}
-        virtual bool equals(int x, int y) const = 0;
-    };
-
-    template<typename sequence_t>
-    struct SequencesContainerImpl : public SequencesContainer
-    {
-        const sequence_t& sequence_a;
-        const sequence_t& sequence_b;
-
-        SequencesContainerImpl(const sequence_t& sequence_a, const sequence_t& sequence_b) : sequence_a(sequence_a), sequence_b(sequence_b) {}
-
-        bool equals(int x, int y) const
-        {
-            return sequence_a.at(x) == sequence_b.at(y);
-        }
-    };
-
-    int diff_inpl(int size_a, int size_b, const SequencesContainer& sequences)
-    {
-        const int& offset = size_a;
-
-        std::vector<VItem> v(size_a + size_b + 1);
-
-        std::vector<TreeNode> tree;
-        int tail = NO_LINK;
-
-        for(int d = 0; d <= size_a + size_b; ++d)
-        {
-            for(int k = -d; k <= d; k += 2)
-            {
-                if((k < -size_a) || (size_b < k))
-                {
-                    continue;
-                }
-
-                std::vector<VItem>::iterator v_k   = v.begin() + k + offset;
-                std::vector<VItem>::iterator v_kp1 = v_k + 1;
-                std::vector<VItem>::iterator v_km1 = v_k - 1;
-
-                if(d != 0)
-                {
-                    if(((k == -d) || (k == -size_a)) || (((k != d) && (k != size_b)) && ((v_km1->y + 1) < v_kp1->y)))
-                    {
-                        v_k->y    = v_kp1->y;
-                        v_k->tail = tree.size();
-                        tree.push_back(TreeNode(DELETE, v_kp1->tail));
-                    }
-                    else
-                    {
-                        v_k->y    = v_km1->y + 1;
-                        v_k->tail = tree.size();
-                        tree.push_back(TreeNode(ADD, v_km1->tail));
-                    }
-                }
-
-                while(((v_k->y - k) < size_a) && (v_k->y < size_b) && sequences.equals(v_k->y - k, v_k->y))
-                {
-                    TreeNode node(COMMON, v_k->tail);
-                    v_k->tail = tree.size();
-                    tree.push_back(node);
-                    ++v_k->y;
-                }
-
-                if(((v_k->y - k) >= size_a) && (v_k->y >= size_b))
-                {
-                    tail = v_k->tail;
-
-                    ses_.clear();
-                    for(int i = tail; i != NO_LINK; i = tree[i].prev)
-                    {
-                        ses_.push_back(tree[i].edit_type);
-                    }
-
-                    return d;
-                }
-            }
-        }
-        throw Exception("not found");
-    }
 
     std::vector<EditType> ses_;
 };
