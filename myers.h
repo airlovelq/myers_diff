@@ -1,13 +1,13 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <algorithm>
+#include <iterator>
 
 class Myers
 {
 public:
     enum EditType { DELETE, COMMON, ADD };
-
-    typedef std::vector<EditType> EditSequence;
 
     class Exception : public std::exception
     {
@@ -28,17 +28,12 @@ public:
         return diff_inpl(sequence_a.size(), sequence_b.size(), SequencesContainerImpl<sequence_t>(sequence_a, sequence_b));
     }
 
-    void get_ses(EditSequence& ses) const;
+    void get_ses(std::vector<EditType>& ses) const
+    {
+        std::copy(ses_.rbegin(), ses_.rend(), std::back_inserter(ses));
+    }
 
 private:
-    struct TreeNode
-    {
-        EditType edit_type;
-        int      prev;
-
-        TreeNode(EditType edit_type, int prev) : edit_type(edit_type), prev(prev) {}
-    };
-
     struct SequencesContainer
     {
         virtual ~SequencesContainer() {}
@@ -61,6 +56,5 @@ private:
 
     int diff_inpl(int size_a, int size_b, const SequencesContainer& sequences);
 
-    std::vector<TreeNode> tree_;
-    int                   tail_;
+    std::vector<EditType> ses_;
 };

@@ -16,7 +16,7 @@ void load(const std::string& filename, std::vector<std::string>& strings)
 }
 
 template<typename sequence_t>
-void showDiff(const Myers::EditSequence& ses, const sequence_t& sequenceA, const sequence_t& sequenceB)
+void showDiff(const std::vector<Myers::EditType>& ses, const sequence_t& sequenceA, const sequence_t& sequenceB)
 {
     typename sequence_t::const_iterator a = sequenceA.begin();
     typename sequence_t::const_iterator b = sequenceB.begin();
@@ -57,8 +57,8 @@ int main(int argc, char* argv[])
 
     try
     {
-        Myers               myers;
-        Myers::EditSequence ses;
+        Myers                        myers;
+        std::vector<Myers::EditType> ses;
 
         std::string filenameA(argv[1]);
         std::string filenameB(argv[2]);
@@ -76,6 +76,7 @@ int main(int argc, char* argv[])
         load(filenameB, stringsB);
 
         std::cout << "CONTENTS: " << myers.diff(stringsA, stringsB) << "\n";
+        ses.clear();
         myers.get_ses(ses);
         showDiff(ses, stringsA, stringsB);
     }
