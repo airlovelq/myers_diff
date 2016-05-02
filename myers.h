@@ -79,10 +79,8 @@ public:
 
                 if(((v_k->y - k) >= size_a) && (v_k->y >= size_b))
                 {
-                    tail = v_k->tail;
-
                     ses_.clear();
-                    for(int i = tail; i != NO_LINK; i = tree[i].prev)
+                    for(int i = v_k->tail; i != NO_LINK; i = tree[i].prev)
                     {
                         ses_.push_back(tree[i].edit_type);
                     }
