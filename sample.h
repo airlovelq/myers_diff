@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "myers.h"
+
 template<typename iterator_t, typename contailer_t>
 struct SesShower
 {
@@ -16,6 +18,8 @@ struct SesShower
 template<typename iterator_t, typename contailer_t>
 std::ostream& operator << (std::ostream& out, const SesShower<iterator_t, contailer_t>& shower)
 {
+    using namespace emattsan::myers;
+
     iterator_t a = shower.first_a;
     iterator_t b = shower.first_b;
     typename contailer_t::const_iterator end_of_ses = std::end(shower.ses);
@@ -23,18 +27,18 @@ std::ostream& operator << (std::ostream& out, const SesShower<iterator_t, contai
     {
         switch(*i)
         {
-        case Myers::DELETE:
+        case DELETE:
             out << "- " << *a;
             ++a;
             break;
 
-        case Myers::COMMON:
+        case COMMON:
             out << "  " << *a;
             ++a;
             ++b;
             break;
 
-        case Myers::ADD:
+        case ADD:
             out << "+ " << *b;
             ++b;
             break;

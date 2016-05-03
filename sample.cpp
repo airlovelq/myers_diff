@@ -18,6 +18,8 @@ void load(const std::string& filename, std::vector<std::string>& strings)
 
 int main(int argc, char* argv[])
 {
+    using namespace emattsan::myers;
+
     if(argc != 3)
     {
         std::cout << argv[0] << " <file_a> <file_b>\n";
@@ -29,7 +31,7 @@ int main(int argc, char* argv[])
         std::string filename_a(argv[1]);
         std::string filename_b(argv[2]);
 
-        std::vector<Myers::EditType> ses = Myers::diff(filename_a, filename_b);
+        std::vector<EditType> ses = diff(filename_a, filename_b);
         std::cout << show_diff(ses, filename_a.begin(), filename_b.begin());
 
         std::cout << "\n";
@@ -40,7 +42,7 @@ int main(int argc, char* argv[])
         load(filename_a, strings_a);
         load(filename_b, strings_b);
 
-        ses = Myers::diff(strings_a.begin(), strings_a.end(), strings_b.begin(), strings_b.end());
+        ses = diff(strings_a.begin(), strings_a.end(), strings_b.begin(), strings_b.end());
         std::cout << show_diff(ses, strings_a.begin(), strings_b.begin());
     }
     catch(const std::exception& e)
